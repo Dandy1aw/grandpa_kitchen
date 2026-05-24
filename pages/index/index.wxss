@@ -366,7 +366,6 @@
   font-size: 28rpx;
   font-weight: 600;
   text-align: left;
-  margin-top: 20rpx;
   box-sizing: border-box;
 }
 

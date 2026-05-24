@@ -324,17 +324,16 @@
             <text class="avatar-stage-hint avatar-stage-hint-ok" wx:else>头像已选好</text>
           </view>
 
-          <input
-            wx:if="{{pendingRole === 'family'}}"
-            class="name-input"
-            value="{{pendingName}}"
-            bindinput="onNameInput"
-            placeholder="输入你的名字"
-            placeholder-class="name-input-placeholder"
-            maxlength="8"
-          />
-
           <view class="avatar-btns">
+            <input
+              wx:if="{{pendingRole === 'family'}}"
+              class="name-input"
+              value="{{pendingName}}"
+              bindinput="onNameInput"
+              placeholder="输入你的名字"
+              placeholder-class="name-input-placeholder"
+              maxlength="8"
+            />
             <button class="avatar-btn-primary" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
               <text>用微信头像</text>
             </button>
