@@ -338,9 +338,9 @@
             <button class="avatar-btn-primary" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
               <text>用微信头像</text>
             </button>
-            <button class="avatar-btn-secondary" bindtap="onChoosePhoto">
+            <view class="avatar-btn-secondary" bindtap="onChoosePhoto">
               <text>上传相册 / 拍照</text>
-            </button>
+            </view>
           </view>
 
           <view class="avatar-footer">

@@ -288,9 +288,11 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  min-height: 88rpx;
+  height: 88rpx;
   margin: 0;
   padding: 0;
+  padding-top: 0;
+  padding-bottom: 0;
   border-radius: 999rpx;
   background: #6f3d2e;
   color: #fffdf8;
@@ -308,20 +310,16 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  min-height: 80rpx;
+  height: 88rpx;
   margin: 0;
   padding: 0;
   border: 2rpx solid #e8cfa8;
   border-radius: 999rpx;
   background: #fffaf0;
   color: #6d4a35;
-  font-size: 26rpx;
+  font-size: 28rpx;
   font-weight: 600;
   box-sizing: border-box;
-}
-
-.avatar-btn-secondary::after {
-  border: none;
 }
 
 .avatar-footer {
