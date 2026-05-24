@@ -1,0 +1,143 @@
+.page-shell {
+  min-height: 100vh;
+  background:
+    linear-gradient(180deg, rgba(248, 199, 124, 0.22), rgba(255, 247, 232, 0) 280rpx),
+    #fff7e8;
+  padding: 24rpx 28rpx calc(60rpx + env(safe-area-inset-bottom, 0rpx));
+  box-sizing: border-box;
+}
+
+.empty-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 40rpx;
+}
+
+.empty-text {
+  color: #9b6d48;
+  font-size: 26rpx;
+  text-align: center;
+}
+
+.timeline {
+  position: relative;
+}
+
+.day-group {
+  position: relative;
+  padding-left: 30rpx;
+  margin-bottom: 32rpx;
+}
+
+.day-group::before {
+  content: '';
+  position: absolute;
+  left: 7rpx;
+  top: 16rpx;
+  bottom: -32rpx;
+  width: 2rpx;
+  background: rgba(248, 199, 124, 0.4);
+}
+
+.day-group:last-child::before {
+  display: none;
+}
+
+.day-group-header {
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+  margin-bottom: 14rpx;
+  margin-left: -30rpx;
+}
+
+.day-dot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  background: #f8c77c;
+  flex: 0 0 16rpx;
+  box-shadow: 0 0 0 4rpx rgba(248, 199, 124, 0.3);
+}
+
+.day-group-date {
+  color: #4b3527;
+  font-size: 26rpx;
+  font-weight: 800;
+}
+
+.day-group-weekday {
+  color: #9b6d48;
+  font-size: 22rpx;
+}
+
+.order-row {
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+  padding: 16rpx 20rpx;
+  margin-bottom: 12rpx;
+  background: #fffdf8;
+  border-radius: 22rpx;
+  border: 2rpx solid rgba(239, 217, 189, 0.9);
+  box-shadow: 0 4rpx 16rpx rgba(111, 61, 46, 0.06);
+  box-sizing: border-box;
+}
+
+.order-diner {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.order-avatar, .order-avatar-placeholder {
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 50%;
+  overflow: hidden;
+  flex: 0 0 48rpx;
+}
+
+.order-avatar-placeholder {
+  background: linear-gradient(145deg, #f8c77c, #f5a66f);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4b3527;
+  font-size: 22rpx;
+  font-weight: 800;
+}
+
+.order-diner-name {
+  color: #4b3527;
+  font-size: 24rpx;
+  font-weight: 700;
+}
+
+.order-dishes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8rpx;
+  padding-left: 60rpx;
+}
+
+.order-dish-chip {
+  padding: 6rpx 14rpx;
+  border-radius: 999rpx;
+  background: #fff7e8;
+  border: 2rpx solid #efd9bd;
+  color: #6d4a35;
+  font-size: 22rpx;
+}
+
+.loading-more, .no-more {
+  display: flex;
+  justify-content: center;
+  padding: 24rpx;
+}
+
+.loading-text, .no-more-text {
+  color: #9b6d48;
+  font-size: 22rpx;
+}

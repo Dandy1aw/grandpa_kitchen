@@ -1,0 +1,134 @@
+<view class="page-shell {{hasOrder ? '' : 'empty'}}">
+  <view class="topbar">
+    <button class="back-button" bindtap="goHome" aria-label="返回菜单">
+      <text class="back-line"></text>
+    </button>
+    <text class="page-title">确认点单</text>
+    <view class="topbar-space"></view>
+  </view>
+
+  <block wx:if="{{hasOrder}}">
+    <view class="order-hero">
+      <view class="hero-copy">
+        <text class="hero-eyebrow">厨房小纸条</text>
+        <text class="hero-title">再看一眼，爷爷就开火</text>
+        <text class="hero-subtitle">确认菜品、家人和口味，热乎饭就有方向了。</text>
+      </view>
+      <view class="hero-stamp">
+        <text>{{summary.totalCount}}</text>
+        <text>份</text>
+      </view>
+    </view>
+
+    <view class="receipt-card">
+      <image class="receipt-paper-image" src="/assets/images/receipt-paper.jpg" mode="aspectFill"></image>
+      <view class="receipt-header">
+        <view>
+          <text class="section-kicker">今日菜单</text>
+          <text class="section-title">爷爷的小票</text>
+        </view>
+        <text class="receipt-count">共 {{summary.totalCount}} 份</text>
+      </view>
+
+      <view class="receipt-list">
+        <view class="receipt-item" wx:for="{{items}}" wx:key="dish.id">
+          <image class="receipt-image" src="{{item.dish.image || '/assets/images/dish-default.jpg'}}" mode="aspectFill"></image>
+          <view class="receipt-info">
+            <text class="dish-name">{{item.dish.name}}</text>
+            <text class="dish-desc">{{item.dish.desc}}</text>
+          </view>
+          <view class="quantity-badge">
+            <text>x{{item.quantity}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="preference-panel">
+      <view class="preference-header">
+        <view>
+          <text class="section-kicker">饭桌偏好</text>
+          <text class="section-title">给谁做，怎么做</text>
+        </view>
+      </view>
+
+      <view class="preference-group">
+        <view class="field-label-row">
+          <text class="field-label">谁点的菜</text>
+          <view class="diner-field-right">
+            <image wx:if="{{avatar}}" class="diner-avatar" src="{{avatar}}" mode="aspectFill"></image>
+            <text class="field-helper">{{diner}}</text>
+          </view>
+        </view>
+        <view class="pref-grid">
+          <view
+            wx:for="{{familyMembers}}"
+            wx:key="*this"
+            class="pref-chip {{diner === item ? 'active' : ''}} {{index === 4 ? 'solo' : ''}}"
+            bindtap="selectDiner"
+            data-value="{{item}}"
+          >
+            <text class="pref-label">{{item}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="preference-group">
+        <view class="field-label-row">
+          <text class="field-label">口味偏好</text>
+          <text class="field-helper">{{taste}}</text>
+        </view>
+        <view class="pref-grid">
+          <view
+            wx:for="{{tasteOptions}}"
+            wx:key="*this"
+            class="pref-chip {{taste === item ? 'active' : ''}} {{index === 4 ? 'solo' : ''}}"
+            bindtap="selectTaste"
+            data-value="{{item}}"
+          >
+            <text class="pref-label">{{item}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="note-card">
+      <view class="note-header">
+        <view>
+          <text class="section-kicker">悄悄话</text>
+          <text class="section-title">给爷爷留言</text>
+        </view>
+        <text class="section-meta">{{note.length}}/80</text>
+      </view>
+      <textarea
+        class="note-input"
+        maxlength="80"
+        value="{{note}}"
+        bindinput="onNoteInput"
+        placeholder="比如：排骨想吃软一点，汤少放盐。"
+        placeholder-class="note-placeholder"
+      />
+    </view>
+
+    <view class="submit-dock safe-bottom">
+      <view class="submit-summary">
+        <text>已确认 {{summary.totalCount}} 份</text>
+        <text>{{diner}} · {{taste}}</text>
+      </view>
+      <button class="submit-button {{isSubmitting ? 'is-loading' : ''}}" bindtap="submitOrder">
+        <text>{{isSubmitting ? '送去厨房中...' : '告诉爷爷'}}</text>
+      </button>
+    </view>
+  </block>
+
+  <view class="empty-state" wx:else>
+    <view class="empty-icon">
+      <view class="empty-bowl"></view>
+    </view>
+    <text class="empty-title">小篮子还是空的</text>
+    <text class="empty-copy">先回菜单挑几道想吃的菜，再告诉爷爷。</text>
+    <button class="home-button" bindtap="goHome">
+      <text>回菜单</text>
+    </button>
+  </view>
+</view>

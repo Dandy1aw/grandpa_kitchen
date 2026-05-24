@@ -1,0 +1,34 @@
+<view class="page-shell">
+  <view class="timeline">
+    <view class="empty-state" wx:if="{{!loading && groups.length === 0}}">
+      <text class="empty-text">还没有回忆，快去点菜吧</text>
+    </view>
+    <view class="day-group" wx:for="{{groups}}" wx:key="dateStr">
+      <view class="day-group-header">
+        <view class="day-dot"></view>
+        <text class="day-group-date">{{item.dateLabel}}</text>
+        <text class="day-group-weekday">{{item.weekday}}</text>
+      </view>
+      <view class="order-row" wx:for="{{item.orders}}" wx:key="_id" wx:for-item="order">
+        <view class="order-diner">
+          <image wx:if="{{order.avatar}}" class="order-avatar" src="{{order.avatar}}" mode="aspectFill"></image>
+          <view wx:else class="order-avatar-placeholder">
+            <text>{{order.diner[0]}}</text>
+          </view>
+          <text class="order-diner-name">{{order.diner}}</text>
+        </view>
+        <view class="order-dishes">
+          <view class="order-dish-chip" wx:for="{{order.items}}" wx:key="name" wx:for-item="dish">
+            <text>{{dish.name}} ×{{dish.quantity}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="loading-more" wx:if="{{loading}}">
+      <text class="loading-text">加载中…</text>
+    </view>
+    <view class="no-more" wx:if="{{!hasMore && groups.length > 0}}">
+      <text class="no-more-text">已经是最早的回忆了</text>
+    </view>
+  </view>
+</view>

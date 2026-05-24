@@ -1,0 +1,41 @@
+<view class="page-shell">
+  <view class="success-mark">
+    <view class="check-line short"></view>
+    <view class="check-line long"></view>
+  </view>
+
+  <text class="title">{{hasOrder ? '爷爷收到啦' : '还没告诉爷爷'}}</text>
+  <text class="subtitle">{{hasOrder ? '厨房马上开火，热乎乎的饭快好了。' : '先回菜单点几道想吃的菜吧。'}}</text>
+
+  <view class="receipt">
+    <image class="receipt-bg" src="/assets/images/receipt-paper.jpg" mode="aspectFill"></image>
+    <view class="receipt-edge"></view>
+    <view class="receipt-row">
+      <text class="label">谁点的</text>
+      <text class="value">{{diner}}</text>
+    </view>
+    <view class="receipt-row vertical">
+      <text class="label">点了什么</text>
+      <text class="value">{{dishText}}</text>
+    </view>
+    <view class="receipt-row">
+      <text class="label">口味</text>
+      <text class="value">{{taste}}</text>
+    </view>
+    <view class="receipt-row vertical">
+      <text class="label">留言</text>
+      <text class="value">{{note}}</text>
+    </view>
+    <view class="receipt-total" wx:if="{{hasOrder}}">
+      <text>共 {{summary.totalCount}} 份</text>
+      <text>厨房开火</text>
+    </view>
+  </view>
+
+  <button class="primary-button" bindtap="goHome">
+    <text>{{hasOrder ? '再点一道' : '回菜单'}}</text>
+  </button>
+  <button class="text-button" bindtap="goHome" wx:if="{{hasOrder}}">
+    <text>回首页</text>
+  </button>
+</view>

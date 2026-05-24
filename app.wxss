@@ -1,0 +1,23 @@
+/**app.wxss**/
+page {
+  min-height: 100vh;
+  color: #4b3527;
+  background: #fff7e8;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+button {
+  margin: 0;
+  padding: 0;
+  line-height: 1.2;
+  border-radius: 0;
+  background: transparent;
+}
+
+button::after {
+  border: 0;
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}

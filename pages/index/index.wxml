@@ -1,0 +1,349 @@
+<view class="page-shell">
+  <view class="hero-card">
+    <image class="hero-bg" src="/assets/images/grandpa-q-cooking.jpg" mode="aspectFill"></image>
+    <view class="hero-overlay"></view>
+    <view class="hero-copy">
+      <text class="eyebrow">今天想吃点什么？</text>
+      <text class="title">爷爷的厨房</text>
+      <text class="subtitle">点一道家常菜，厨房就有了惦记。</text>
+    </view>
+  </view>
+
+  <block wx:if="{{recentMoments.length > 0}}">
+    <view class="moments-card">
+      <swiper
+        class="moments-swiper"
+        autoplay
+        interval="3000"
+        circular
+        indicator-dots="{{false}}"
+        current="{{momentsCurrent}}"
+        bindchange="onMomentsChange"
+        bindtap="goFamily"
+      >
+        <swiper-item
+          wx:for="{{recentMoments}}"
+          wx:key="_id"
+          class="moment-slide"
+        >
+          <image class="moment-slide-img" src="{{item.imageUrl}}" mode="aspectFill"></image>
+          <view class="moment-slide-overlay">
+            <text class="moment-slide-meta">{{item.userName}} · {{item.timeStr}}</text>
+            <view class="moment-dots">
+              <view
+                wx:for="{{recentMoments}}"
+                wx:key="index"
+                wx:for-item="dot"
+                wx:for-index="di"
+                class="moment-dot {{di === momentsCurrent ? 'moment-dot-active' : ''}}"
+              ></view>
+            </view>
+          </view>
+        </swiper-item>
+      </swiper>
+    </view>
+  </block>
+
+  <block wx:if="{{activePanel === 'menu'}}">
+    <view class="category-card">
+      <scroll-view class="category-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+        <view class="category-row">
+          <button
+            wx:for="{{categories}}"
+            wx:key="id"
+            class="category-chip {{activeCategory === item.id ? 'is-active' : ''}}"
+            bindtap="selectCategory"
+            data-id="{{item.id}}"
+          >
+            <text>{{item.name}}</text>
+          </button>
+        </view>
+      </scroll-view>
+    </view>
+
+    <view class="add-dish-card">
+      <view>
+        <text class="section-kicker">家里的新菜单</text>
+        <text class="add-dish-title">把今天想吃的菜告诉爷爷</text>
+      </view>
+      <view class="add-dish-actions">
+        <button class="share-menu-button" wx:if="{{customDishes.length}}" open-type="share" data-share-type="customMenu">
+          <text>分享菜单</text>
+        </button>
+        <button class="add-dish-button" bindtap="openCustomDishForm">
+          <text>新增菜单</text>
+        </button>
+      </view>
+    </view>
+
+    <view class="custom-form" wx:if="{{isCustomDishFormOpen}}">
+      <view class="form-header">
+        <view>
+          <text class="form-title">新增一道菜</text>
+          <text class="form-subtitle">给家里菜单添一点今天的想念</text>
+        </view>
+        <button class="form-close" bindtap="closeCustomDishForm" aria-label="关闭新增菜单">
+          <text>×</text>
+        </button>
+      </view>
+      <view class="form-field">
+        <view class="field-label-row">
+          <text class="form-label">菜单图片</text>
+          <text class="form-helper">可拍照或从相册选一张</text>
+        </view>
+        <button class="image-uploader" bindtap="chooseDishImage" aria-label="上传菜单图片">
+          <image wx:if="{{customDishForm.image}}" class="form-image" src="{{customDishForm.image}}" mode="aspectFill"></image>
+          <view wx:if="{{customDishForm.image}}" class="image-action">
+            <text>更换图片</text>
+          </view>
+          <view wx:else class="form-image-placeholder">
+            <text class="upload-plus">+</text>
+            <text>上传菜单图片</text>
+          </view>
+        </button>
+      </view>
+      <view class="form-field">
+        <view class="field-label-row">
+          <text class="form-label">菜名 <text class="required-mark">*</text></text>
+          <text class="form-helper">最多 16 个字</text>
+        </view>
+        <input
+          class="form-input"
+          value="{{customDishForm.name}}"
+          bindinput="onCustomDishInput"
+          data-field="name"
+          maxlength="16"
+          placeholder="比如 番茄炒蛋"
+          placeholder-class="form-placeholder"
+        />
+      </view>
+      <view class="form-field">
+        <view class="field-label-row">
+          <text class="form-label">分类</text>
+          <text class="form-helper">方便爷爷找菜</text>
+        </view>
+        <picker mode="selector" range="{{categoryOptions}}" range-key="name" value="{{customDishCategoryIndex}}" bindchange="onCustomDishCategoryChange">
+          <view class="form-picker">
+            <text>{{categoryOptions[customDishCategoryIndex].name}}</text>
+            <text class="picker-arrow">›</text>
+          </view>
+        </picker>
+      </view>
+      <view class="form-field">
+        <view class="field-label-row">
+          <text class="form-label">味道描述</text>
+          <text class="form-helper">可选</text>
+        </view>
+        <input
+          class="form-input"
+          value="{{customDishForm.desc}}"
+          bindinput="onCustomDishInput"
+          data-field="desc"
+          maxlength="24"
+          placeholder="比如 家里的甜口"
+          placeholder-class="form-placeholder"
+        />
+      </view>
+      <view class="form-field">
+        <view class="field-label-row">
+          <text class="form-label">小标签</text>
+          <text class="form-helper">可选，点一下选定</text>
+        </view>
+        <view class="tag-chip-grid">
+          <view
+            wx:for="{{tagOptions}}"
+            wx:key="*this"
+            class="tag-chip {{customDishForm.tag === item ? 'is-selected' : ''}}"
+            bindtap="selectTag"
+            data-tag="{{item}}"
+          >
+            <text class="tag-chip-label">{{item}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="form-actions">
+        <button class="cancel-dish-button" bindtap="closeCustomDishForm">
+          <text>先不加</text>
+        </button>
+        <button class="save-dish-button" bindtap="saveCustomDish">
+          <text>放进菜单</text>
+        </button>
+      </view>
+    </view>
+
+    <view class="dish-list">
+      <view class="dish-card" wx:for="{{dishes}}" wx:key="id">
+        <view class="dish-art" style="background: {{item.color}};" bindtap="previewDishImage" data-src="{{item.image}}">
+          <image class="dish-image" src="{{item.image || '/assets/images/dish-default.jpg'}}" mode="aspectFill"></image>
+          <view class="dish-art-tint"></view>
+          <view class="dish-art-actions">
+            <view class="dish-action-btn dish-delete-btn" catchtap="deleteDish" data-id="{{item.id}}" data-name="{{item.name}}" data-custom="{{item.custom}}">
+              <text class="dish-action-icon">×</text>
+            </view>
+            <view class="dish-action-btn dish-edit-btn" catchtap="editDishImage" data-id="{{item.id}}" data-custom="{{item.custom}}">
+              <text class="dish-action-icon">换</text>
+            </view>
+          </view>
+        </view>
+        <view class="dish-info">
+          <view class="dish-heading">
+            <text class="dish-name">{{item.name}}</text>
+          </view>
+          <text class="dish-desc">{{item.desc}}</text>
+          <view class="dish-footer">
+            <text class="dish-tag">{{item.tag}}</text>
+            <view class="stepper">
+              <button
+                wx:if="{{item.quantity}}"
+                class="step-button minus"
+                bindtap="decrementDish"
+                data-id="{{item.id}}"
+                aria-label="减少{{item.name}}"
+              >
+                <text>-</text>
+              </button>
+              <text wx:if="{{item.quantity}}" class="quantity">{{item.quantity}}</text>
+              <button
+                class="step-button add"
+                bindtap="addDish"
+                data-id="{{item.id}}"
+                aria-label="添加{{item.name}}"
+              >
+                <text>+</text>
+              </button>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <view class="selected-panel" wx:else>
+    <view class="selected-empty" wx:if="{{!summary.totalCount}}">
+      <text class="selected-title">小篮子还是空的</text>
+      <text class="selected-copy">回到菜单，给爷爷点几道想吃的菜。</text>
+    </view>
+    <view class="selected-list" wx:else>
+      <view class="selected-card" wx:for="{{cart}}" wx:key="dish.id">
+        <image
+          class="selected-image"
+          src="{{item.dish.image || '/assets/images/dish-default.jpg'}}"
+          mode="aspectFill"
+          bindtap="previewSelectedDishImage"
+          data-src="{{item.dish.image || '/assets/images/dish-default.jpg'}}"
+          aria-label="查看{{item.dish.name}}大图"
+        ></image>
+        <view class="selected-info">
+          <text class="selected-name">{{item.dish.name}}</text>
+          <text class="selected-desc">{{item.dish.desc}}</text>
+        </view>
+        <view class="stepper selected-stepper">
+          <button class="step-button minus" bindtap="decrementDish" data-id="{{item.dish.id}}" aria-label="减少{{item.dish.name}}">
+            <text>-</text>
+          </button>
+          <text class="quantity">{{item.quantity}}</text>
+          <button class="step-button add" bindtap="addDish" data-id="{{item.dish.id}}" aria-label="添加{{item.dish.name}}">
+            <text>+</text>
+          </button>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="bottom-dock safe-bottom">
+    <view class="bottom-switch">
+      <button class="switch-item {{activePanel === 'menu' ? 'is-active' : ''}}" bindtap="switchPanel" data-panel="menu">
+        <text>菜单</text>
+      </button>
+      <view class="family-fab" bindtap="goFamily">
+        <text class="family-fab-icon">🏠</text>
+        <text class="family-fab-label">家庭</text>
+      </view>
+      <button class="switch-item {{activePanel === 'cart' ? 'is-active' : ''}}" bindtap="switchPanel" data-panel="cart">
+        <text>已选 {{summary.totalCount}}</text>
+      </button>
+    </view>
+    <view class="confirm-row" wx:if="{{summary.totalCount}}">
+      <text class="cart-title">已选 {{summary.totalCount}} 道，爷爷马上安排</text>
+      <button class="cart-action" bindtap="goConfirm">
+        <text>去确认</text>
+      </button>
+    </view>
+  </view>
+
+  <view class="admin-fab" bindtap="goAdmin">
+    <view class="admin-fab-badge" wx:if="{{unread.hasUnread}}">
+      <text>{{adminBadgeText}}</text>
+    </view>
+    <text class="admin-fab-text">爷爷看单</text>
+  </view>
+
+  <view class="identity-modal" wx:if="{{showIdentityModal}}">
+    <view class="identity-card">
+
+      <block wx:if="{{identityStep === 1}}">
+        <text class="identity-title">你好，请问你是</text>
+        <text class="identity-sub">帮我们给你最合适的体验</text>
+        <view class="identity-options">
+          <view class="identity-opt identity-opt-grandpa" bindtap="selectIdentity" data-role="grandpa">
+            <text class="identity-opt-avatar">爷</text>
+            <text class="identity-opt-name">我是爷爷</text>
+            <text class="identity-opt-desc">查看今日点单，接收通知</text>
+          </view>
+          <view class="identity-opt identity-opt-family" bindtap="selectIdentity" data-role="family">
+            <text class="identity-opt-avatar">家</text>
+            <text class="identity-opt-name">我是家人</text>
+            <text class="identity-opt-desc">给爷爷点菜</text>
+          </view>
+        </view>
+      </block>
+
+      <block wx:if="{{identityStep === 2}}">
+        <view class="avatar-step">
+          <text class="avatar-step-title">{{pendingRole === 'grandpa' ? '设置头像' : '告诉我你是谁'}}</text>
+          <text class="avatar-step-sub">{{pendingRole === 'grandpa' ? '让家人一眼认出你' : '让爷爷知道是谁在想他'}}</text>
+
+          <view class="avatar-stage">
+            <view class="avatar-halo">
+              <view class="avatar-ring">
+                <view class="avatar-circle">
+                  <image wx:if="{{avatarPreview}}" class="avatar-circle-img" src="{{avatarPreview}}" mode="aspectFill"></image>
+                  <view wx:else class="avatar-placeholder">
+                    <text class="avatar-initial">{{pendingName ? pendingName[0] : (pendingRole === 'grandpa' ? '爷' : '家')}}</text>
+                  </view>
+                </view>
+              </view>
+            </view>
+            <text class="avatar-stage-hint" wx:if="{{!avatarPreview}}">从下方选择头像</text>
+            <text class="avatar-stage-hint avatar-stage-hint-ok" wx:else>头像已选好</text>
+          </view>
+
+          <input
+            wx:if="{{pendingRole === 'family'}}"
+            class="name-input"
+            value="{{pendingName}}"
+            bindinput="onNameInput"
+            placeholder="输入你的名字"
+            placeholder-class="name-input-placeholder"
+            maxlength="8"
+          />
+
+          <view class="avatar-btns">
+            <button class="avatar-btn-primary" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+              <text>用微信头像</text>
+            </button>
+            <button class="avatar-btn-secondary" bindtap="onChoosePhoto">
+              <text>上传相册 / 拍照</text>
+            </button>
+          </view>
+
+          <view class="avatar-footer">
+            <view class="avatar-skip" wx:if="{{pendingRole === 'grandpa'}}" bindtap="confirmIdentity"><text>跳过</text></view>
+            <view class="avatar-confirm {{(pendingRole === 'grandpa' || pendingName) ? 'avatar-confirm-active' : ''}}" bindtap="confirmIdentity"><text>完成</text></view>
+          </view>
+        </view>
+      </block>
+
+    </view>
+  </view>
+</view>

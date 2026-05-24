@@ -1,0 +1,238 @@
+<view class="page-shell">
+  <view class="family-header">
+    <text class="family-header-title">家庭</text>
+    <text class="family-header-sub">温馨时刻，一起规划</text>
+  </view>
+
+  <view class="family-tabs">
+    <view
+      class="family-tab {{activeTab === 'moments' ? 'tab-active' : ''}}"
+      bindtap="switchTab"
+      data-tab="moments"
+    ><text>温馨时刻</text></view>
+    <view
+      class="family-tab {{activeTab === 'menu' ? 'tab-active' : ''}}"
+      bindtap="switchTab"
+      data-tab="menu"
+    ><text>菜单计划</text></view>
+    <view
+      class="family-tab {{activeTab === 'reviews' ? 'tab-active' : ''}}"
+      bindtap="switchTab"
+      data-tab="reviews"
+    ><text>菜品评价</text></view>
+  </view>
+
+  <block wx:if="{{activeTab === 'moments'}}">
+    <view class="post-fab" bindtap="openPostForm">
+      <text class="post-fab-icon">+</text>
+    </view>
+
+    <view class="post-panel" wx:if="{{showPostForm}}">
+      <view class="post-panel-header">
+        <text class="post-panel-title">发一条温馨时刻</text>
+        <view bindtap="closePostForm"><text class="post-close">×</text></view>
+      </view>
+      <view class="post-image-pick" bindtap="choosePostImage">
+        <image wx:if="{{postImagePath}}" class="post-preview" src="{{postImagePath}}" mode="aspectFill"></image>
+        <view wx:else class="post-image-placeholder">
+          <text class="post-plus">+</text>
+          <text class="post-pick-label">选择照片</text>
+        </view>
+      </view>
+      <input
+        class="post-caption-input"
+        value="{{postCaption}}"
+        bindinput="onPostCaptionInput"
+        placeholder="说点什么…（选填）"
+        placeholder-class="post-placeholder"
+        maxlength="60"
+      />
+      <button class="post-submit" bindtap="submitPost"><text>发布</text></button>
+    </view>
+
+    <view class="moments-feed" wx:if="{{!showPostForm}}">
+      <view class="empty-moments" wx:if="{{!momentsLoading && moments.length === 0}}">
+        <text class="empty-moments-text">还没有温馨时刻，快来发第一条吧</text>
+      </view>
+      <view class="moment-card" wx:for="{{moments}}" wx:key="_id">
+        <view class="moment-header">
+          <view class="moment-avatar-wrap">
+            <image wx:if="{{item.avatar}}" class="moment-avatar" src="{{item.avatar}}" mode="aspectFill"></image>
+            <view wx:else class="moment-avatar-placeholder">
+              <text class="moment-avatar-char">{{item.userName[0]}}</text>
+            </view>
+          </view>
+          <view class="moment-meta">
+            <text class="moment-name">{{item.userName}}</text>
+            <text class="moment-time">{{item.timeStr}}</text>
+          </view>
+        </view>
+        <image class="moment-photo" src="{{item.imageUrl}}" mode="aspectFill"
+          bindtap="previewMomentPhoto" data-src="{{item.imageUrl}}"></image>
+        <view class="moment-caption" wx:if="{{item.caption}}"><text>{{item.caption}}</text></view>
+        <view class="moment-actions">
+          <view class="moment-like" bindtap="onToggleLike" data-id="{{item._id}}" data-likes="{{item.likes}}">
+            <text class="like-icon">{{item.likes.length > 0 ? '❤️' : '🤍'}}</text>
+            <text class="like-count" wx:if="{{item.likes.length > 0}}">{{item.likes.length}}</text>
+          </view>
+          <view class="moment-comment-btn" bindtap="toggleComments" data-id="{{item._id}}">
+            <text class="comment-icon">💬</text>
+            <text class="comment-count" wx:if="{{item.comments.length > 0}}">{{item.comments.length}}</text>
+          </view>
+        </view>
+        <view class="comment-section" wx:if="{{expandedCommentId === item._id}}">
+          <view class="comment-row" wx:for="{{item.comments}}" wx:key="createdAt" wx:for-item="c">
+            <text class="comment-name">{{c.userName}}：</text>
+            <text class="comment-text">{{c.text}}</text>
+          </view>
+          <view class="comment-input-row">
+            <input class="comment-input" value="{{commentInput}}" bindinput="onCommentInput"
+              placeholder="说点什么…" placeholder-class="post-placeholder" />
+            <view class="comment-send" bindtap="submitComment" data-id="{{item._id}}">
+              <text>发送</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <block wx:elif="{{activeTab === 'menu'}}">
+    <view class="menu-plan">
+      <view class="menu-week-header">
+        <text class="week-label">{{weekLabel}}</text>
+      </view>
+      <view class="day-list">
+        <view
+          class="day-row {{item.isToday ? 'day-today' : ''}}"
+          wx:for="{{weekDays}}"
+          wx:key="key"
+        >
+          <view class="day-label-col">
+            <text class="day-label">{{item.label}}</text>
+            <text class="day-date">{{item.date}}</text>
+          </view>
+          <view class="day-entries">
+            <view class="entry-chip" wx:for="{{item.entries}}" wx:key="createdAt" wx:for-item="en">
+              <text class="entry-dish">{{en.dishName}}</text>
+              <text class="entry-by">{{en.suggestedBy}}</text>
+              <view class="entry-del" catchtap="onDeleteEntry" data-day="{{item.key}}" data-created-at="{{en.createdAt}}" aria-label="删除{{en.dishName}}">
+                <text class="entry-del-icon">×</text>
+              </view>
+            </view>
+            <view class="add-entry-btn" bindtap="openAddEntry" data-day="{{item.key}}">
+              <text>+ 加一道</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="add-entry-modal" wx:if="{{showAddEntryDay}}">
+        <view class="add-entry-card">
+          <text class="add-entry-title">加一道菜</text>
+          <input
+            class="add-entry-input"
+            value="{{newDishName}}"
+            bindinput="onNewDishInput"
+            placeholder="输入菜名"
+            placeholder-class="post-placeholder"
+            maxlength="16"
+            focus="{{true}}"
+          />
+          <scroll-view
+            class="candidate-list"
+            scroll-y
+            wx:if="{{filteredCandidates.length > 0}}"
+          >
+            <view
+              class="candidate-item"
+              wx:for="{{filteredCandidates}}"
+              wx:key="*this"
+              bindtap="onSelectCandidate"
+              data-name="{{item}}"
+            ><text>{{item}}</text></view>
+          </scroll-view>
+          <view class="add-entry-actions">
+            <view class="add-entry-cancel" bindtap="closeAddEntry"><text>取消</text></view>
+            <view class="add-entry-confirm" bindtap="confirmAddEntry"><text>确认</text></view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <block wx:else>
+    <view class="reviews-tab">
+      <view class="reviews-empty" wx:if="{{doneDishes.length === 0}}">
+        <text class="reviews-empty-text">爷爷标记菜做完后，就可以来这里评价啦</text>
+      </view>
+      <view class="review-card" wx:for="{{doneDishes}}" wx:key="name">
+        <block wx:if="{{myReviews[item.name]}}">
+          <view class="review-card-header">
+            <text class="review-dish-name">{{item.name}}</text>
+            <view class="reviewed-badge"><text>已评价</text></view>
+          </view>
+          <view class="my-tags">
+            <view class="my-tag" wx:for="{{myReviews[item.name].tags}}" wx:key="*this" wx:for-item="tag">
+              <text>{{tag}}</text>
+            </view>
+          </view>
+          <text class="my-comment" wx:if="{{myReviews[item.name].comment}}">{{myReviews[item.name].comment}}</text>
+        </block>
+        <block wx:else>
+          <text class="review-dish-name">{{item.name}}</text>
+          <view class="tag-section">
+            <text class="tag-group-label">超好吃</text>
+            <view class="tag-row">
+              <view
+                wx:for="{{reviewTags.positive}}"
+                wx:key="*this"
+                wx:for-item="tag"
+                class="r-tag {{item.selectedTags.indexOf(tag) >= 0 ? 'r-tag-active' : ''}}"
+                bindtap="toggleReviewTag"
+                data-dish="{{item.name}}"
+                data-tag="{{tag}}"
+              ><text>{{tag}}</text></view>
+            </view>
+            <text class="tag-group-label">还不错</text>
+            <view class="tag-row">
+              <view
+                wx:for="{{reviewTags.neutral}}"
+                wx:key="*this"
+                wx:for-item="tag"
+                class="r-tag {{item.selectedTags.indexOf(tag) >= 0 ? 'r-tag-active' : ''}}"
+                bindtap="toggleReviewTag"
+                data-dish="{{item.name}}"
+                data-tag="{{tag}}"
+              ><text>{{tag}}</text></view>
+            </view>
+            <text class="tag-group-label">建设性</text>
+            <view class="tag-row">
+              <view
+                wx:for="{{reviewTags.critical}}"
+                wx:key="*this"
+                wx:for-item="tag"
+                class="r-tag {{item.selectedTags.indexOf(tag) >= 0 ? 'r-tag-active' : ''}}"
+                bindtap="toggleReviewTag"
+                data-dish="{{item.name}}"
+                data-tag="{{tag}}"
+              ><text>{{tag}}</text></view>
+            </view>
+          </view>
+          <input
+            class="review-comment-input"
+            value="{{item.comment}}"
+            bindinput="onReviewCommentInput"
+            data-dish="{{item.name}}"
+            placeholder="留言给爷爷（选填）"
+            placeholder-class="post-placeholder"
+            maxlength="40"
+          />
+          <button class="review-submit" bindtap="submitReview" data-dish="{{item.name}}">
+            <text>提交评价</text>
+          </button>
+        </block>
+      </view>
+    </view>
+  </block>
+</view>

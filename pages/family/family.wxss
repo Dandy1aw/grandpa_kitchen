@@ -1,0 +1,700 @@
+.page-shell {
+  min-height: 100vh;
+  background:
+    linear-gradient(180deg, rgba(248, 199, 124, 0.22), rgba(255, 247, 232, 0) 280rpx),
+    #fff7e8;
+  box-sizing: border-box;
+}
+
+.family-header {
+  padding: 32rpx 28rpx 20rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+}
+
+.family-header-title {
+  color: #4b3527;
+  font-size: 40rpx;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.family-header-sub {
+  color: #9b6d48;
+  font-size: 24rpx;
+}
+
+.family-tabs {
+  display: flex;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #fff7e8;
+  border-bottom: 2rpx solid #efd9bd;
+}
+
+.family-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 88rpx;
+  color: #9b6d48;
+  font-size: 26rpx;
+  font-weight: 600;
+}
+
+.family-tab.tab-active {
+  color: #6f3d2e;
+  font-weight: 800;
+  border-bottom: 4rpx solid #f8c77c;
+}
+
+.tab-content {
+  padding: 28rpx;
+}
+
+/* ── 温馨时刻 ── */
+
+.post-fab {
+  position: fixed;
+  right: 32rpx;
+  bottom: calc(60rpx + env(safe-area-inset-bottom, 0rpx));
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 50%;
+  background: #6f3d2e;
+  box-shadow: 0 8rpx 24rpx rgba(111, 61, 46, 0.3);
+}
+
+.post-fab-icon {
+  color: #fffdf8;
+  font-size: 48rpx;
+  line-height: 1;
+  margin-top: -4rpx;
+}
+
+.post-panel {
+  padding: 28rpx;
+}
+
+.post-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+
+.post-panel-title {
+  color: #4b3527;
+  font-size: 30rpx;
+  font-weight: 800;
+}
+
+.post-close {
+  color: #9b6d48;
+  font-size: 36rpx;
+  line-height: 1;
+}
+
+.post-image-pick {
+  width: 100%;
+  height: 360rpx;
+  border-radius: 24rpx;
+  overflow: hidden;
+  border: 2rpx dashed #efd9bd;
+  background: #fffaf0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20rpx;
+  box-sizing: border-box;
+}
+
+.post-preview {
+  width: 100%;
+  height: 100%;
+}
+
+.post-image-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.post-plus {
+  color: #6f3d2e;
+  font-size: 56rpx;
+  line-height: 1;
+}
+
+.post-pick-label {
+  color: #9b6d48;
+  font-size: 24rpx;
+}
+
+.post-caption-input {
+  width: 100%;
+  min-height: 80rpx;
+  padding: 0 20rpx;
+  border: 2rpx solid #efd9bd;
+  border-radius: 20rpx;
+  background: #fffaf0;
+  color: #4b3527;
+  font-size: 26rpx;
+  margin-bottom: 20rpx;
+  box-sizing: border-box;
+}
+
+.post-placeholder {
+  color: rgba(155, 109, 72, 0.6);
+}
+
+.post-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 88rpx;
+  margin: 0;
+  border-radius: 999rpx;
+  background: #6f3d2e;
+  color: #fffdf8;
+  font-size: 28rpx;
+  font-weight: 700;
+  box-sizing: border-box;
+}
+
+.post-submit::after {
+  border: none;
+}
+
+.moments-feed {
+  padding: 16rpx 20rpx calc(120rpx + env(safe-area-inset-bottom, 0rpx));
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.empty-moments {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80rpx 40rpx;
+}
+
+.empty-moments-text {
+  color: #9b6d48;
+  font-size: 26rpx;
+  text-align: center;
+}
+
+.moment-card {
+  background: #fffdf8;
+  border-radius: 28rpx;
+  border: 2rpx solid rgba(239, 217, 189, 0.9);
+  overflow: hidden;
+  box-shadow: 0 8rpx 24rpx rgba(111, 61, 46, 0.08);
+}
+
+.moment-header {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 20rpx 20rpx 12rpx;
+}
+
+.moment-avatar-wrap {
+  width: 72rpx;
+  height: 72rpx;
+  flex: 0 0 72rpx;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.moment-avatar {
+  width: 100%;
+  height: 100%;
+}
+
+.moment-avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(145deg, #f8c77c, #f5a66f);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.moment-avatar-char {
+  color: #4b3527;
+  font-size: 30rpx;
+  font-weight: 800;
+}
+
+.moment-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.moment-name {
+  color: #4b3527;
+  font-size: 26rpx;
+  font-weight: 700;
+}
+
+.moment-time {
+  color: #9b6d48;
+  font-size: 20rpx;
+}
+
+.moment-photo {
+  width: 100%;
+  height: 400rpx;
+  display: block;
+}
+
+.moment-caption {
+  display: block;
+  padding: 16rpx 20rpx 8rpx;
+  color: #4b3527;
+  font-size: 26rpx;
+  line-height: 1.5;
+}
+
+.moment-actions {
+  display: flex;
+  align-items: center;
+  gap: 28rpx;
+  padding: 12rpx 20rpx 16rpx;
+}
+
+.moment-like,
+.moment-comment-btn {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.like-icon,
+.comment-icon {
+  font-size: 32rpx;
+  line-height: 1;
+}
+
+.like-count,
+.comment-count {
+  color: #9b6d48;
+  font-size: 22rpx;
+}
+
+.comment-section {
+  border-top: 2rpx solid #f5ecd8;
+  padding: 16rpx 20rpx;
+  background: #fffaf0;
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.comment-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4rpx;
+}
+
+.comment-name {
+  color: #6f3d2e;
+  font-size: 24rpx;
+  font-weight: 700;
+}
+
+.comment-text {
+  color: #4b3527;
+  font-size: 24rpx;
+  line-height: 1.5;
+  flex: 1;
+}
+
+.comment-input-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-top: 8rpx;
+}
+
+.comment-input {
+  flex: 1;
+  height: 72rpx;
+  padding: 0 16rpx;
+  border: 2rpx solid #efd9bd;
+  border-radius: 999rpx;
+  background: #fffdf8;
+  color: #4b3527;
+  font-size: 24rpx;
+  box-sizing: border-box;
+}
+
+.comment-send {
+  padding: 0 24rpx;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999rpx;
+  background: #6f3d2e;
+  color: #fffdf8;
+  font-size: 24rpx;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* ── 菜单计划 ── */
+
+.menu-plan {
+  padding: 20rpx 20rpx calc(120rpx + env(safe-area-inset-bottom, 0rpx));
+}
+
+.menu-week-header {
+  padding: 12rpx 0 20rpx;
+}
+
+.week-label {
+  color: #4b3527;
+  font-size: 26rpx;
+  font-weight: 800;
+}
+
+.day-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.day-row {
+  display: flex;
+  gap: 16rpx;
+  padding: 16rpx;
+  border-radius: 24rpx;
+  background: #fffdf8;
+  border: 2rpx solid rgba(239, 217, 189, 0.9);
+  box-sizing: border-box;
+}
+
+.day-today {
+  border-color: #f8c77c;
+  background: linear-gradient(135deg, rgba(248,199,124,0.12), #fffdf8);
+}
+
+.day-label-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 72rpx;
+  gap: 4rpx;
+}
+
+.day-label {
+  color: #4b3527;
+  font-size: 24rpx;
+  font-weight: 800;
+}
+
+.day-date {
+  color: #9b6d48;
+  font-size: 20rpx;
+}
+
+.day-entries {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10rpx;
+  align-items: center;
+}
+
+.entry-chip {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+  padding: 8rpx 14rpx;
+  border-radius: 999rpx;
+  background: #fff7e8;
+  border: 2rpx solid #efd9bd;
+}
+
+.entry-dish {
+  color: #4b3527;
+  font-size: 24rpx;
+  font-weight: 700;
+}
+
+.entry-by {
+  color: #9b6d48;
+  font-size: 20rpx;
+}
+
+.entry-del {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44rpx;
+  min-height: 44rpx;
+  margin-left: 2rpx;
+}
+
+.entry-del-icon {
+  color: #c9a07c;
+  font-size: 24rpx;
+  line-height: 1;
+}
+
+.add-entry-btn {
+  padding: 8rpx 16rpx;
+  border-radius: 999rpx;
+  border: 2rpx dashed #efd9bd;
+  color: #9b6d48;
+  font-size: 22rpx;
+}
+
+.add-entry-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 100;
+  background: rgba(75, 53, 39, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-entry-card {
+  width: 560rpx;
+  padding: 40rpx;
+  border-radius: 32rpx;
+  background: #fffdf8;
+  box-sizing: border-box;
+}
+
+.add-entry-title {
+  display: block;
+  color: #4b3527;
+  font-size: 30rpx;
+  font-weight: 800;
+  margin-bottom: 24rpx;
+  text-align: center;
+}
+
+.add-entry-input {
+  width: 100%;
+  height: 88rpx;
+  padding: 0 20rpx;
+  border: 2rpx solid #efd9bd;
+  border-radius: 20rpx;
+  background: #fffaf0;
+  color: #4b3527;
+  font-size: 26rpx;
+  margin-bottom: 24rpx;
+  box-sizing: border-box;
+}
+
+.add-entry-actions {
+  display: flex;
+  gap: 16rpx;
+}
+
+.add-entry-cancel, .add-entry-confirm {
+  flex: 1;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999rpx;
+  font-size: 26rpx;
+  font-weight: 700;
+}
+
+.add-entry-cancel {
+  background: #fff7e8;
+  color: #9b6d48;
+}
+
+.add-entry-confirm {
+  background: #f8c77c;
+  color: #4b3527;
+}
+
+/* ── 菜品评价 ── */
+
+.reviews-tab {
+  padding: 20rpx 20rpx calc(80rpx + env(safe-area-inset-bottom, 0rpx));
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.reviews-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80rpx 40rpx;
+}
+
+.reviews-empty-text {
+  color: #9b6d48;
+  font-size: 26rpx;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.review-card {
+  padding: 24rpx;
+  background: #fffdf8;
+  border-radius: 28rpx;
+  border: 2rpx solid rgba(239, 217, 189, 0.9);
+  box-shadow: 0 8rpx 24rpx rgba(111, 61, 46, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.review-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.review-dish-name {
+  color: #4b3527;
+  font-size: 28rpx;
+  font-weight: 800;
+}
+
+.reviewed-badge {
+  padding: 6rpx 18rpx;
+  border-radius: 999rpx;
+  background: #f0e8c8;
+  color: #6f3d2e;
+  font-size: 20rpx;
+  font-weight: 700;
+}
+
+.my-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10rpx;
+}
+
+.my-tag {
+  padding: 8rpx 18rpx;
+  border-radius: 999rpx;
+  background: #f8c77c;
+  color: #4b3527;
+  font-size: 22rpx;
+  font-weight: 700;
+}
+
+.my-comment {
+  color: #6d4a35;
+  font-size: 24rpx;
+  line-height: 1.5;
+}
+
+.tag-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+}
+
+.tag-group-label {
+  color: #9b6d48;
+  font-size: 20rpx;
+  font-weight: 700;
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10rpx;
+}
+
+.r-tag {
+  padding: 10rpx 20rpx;
+  border-radius: 999rpx;
+  border: 2rpx solid #efd9bd;
+  background: #fffaf0;
+  color: #6d4a35;
+  font-size: 24rpx;
+}
+
+.r-tag-active {
+  border-color: #f5a66f;
+  background: #f8c77c;
+  color: #4b3527;
+  font-weight: 700;
+}
+
+.review-comment-input {
+  width: 100%;
+  height: 80rpx;
+  padding: 0 20rpx;
+  border: 2rpx solid #efd9bd;
+  border-radius: 20rpx;
+  background: #fffaf0;
+  color: #4b3527;
+  font-size: 24rpx;
+  box-sizing: border-box;
+}
+
+.review-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 80rpx;
+  margin: 0;
+  border-radius: 999rpx;
+  background: #6f3d2e;
+  color: #fffdf8;
+  font-size: 26rpx;
+  font-weight: 700;
+  box-sizing: border-box;
+}
+
+.review-submit::after {
+  border: none;
+}
+
+/* ── 菜品候选列表 ── */
+
+.candidate-list {
+  width: 100%;
+  height: 240rpx;
+  margin-bottom: 16rpx;
+  border: 2rpx solid #efd9bd;
+  border-radius: 16rpx;
+  background: #fffaf0;
+  box-sizing: border-box;
+}
+
+.candidate-item {
+  padding: 18rpx 20rpx;
+  color: #4b3527;
+  font-size: 26rpx;
+  border-bottom: 1rpx solid #f5ecd8;
+  min-height: 72rpx;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.candidate-item:last-child {
+  border-bottom: none;
+}

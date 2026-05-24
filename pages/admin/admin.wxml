@@ -1,0 +1,182 @@
+<view class="page-shell">
+
+  <!-- ── 顶部信息头 ── -->
+  <view class="admin-header">
+    <view class="header-main">
+      <view class="header-copy">
+        <text class="header-eyebrow">爷爷的厨房</text>
+        <text class="header-title">今日点单</text>
+        <text class="header-date">{{dateText}} · {{weekday}}</text>
+      </view>
+      <view class="header-stamp">
+        <text class="stamp-num">{{stats.totalCount}}</text>
+        <text class="stamp-unit">份</text>
+      </view>
+    </view>
+    <view class="stats-bar">
+      <view class="stat-item">
+        <text class="stat-val">{{stats.orderCount}}</text>
+        <text class="stat-lbl">人点单</text>
+      </view>
+      <view class="stat-sep"></view>
+      <view class="stat-item">
+        <text class="stat-val">{{stats.dishCount}}</text>
+        <text class="stat-lbl">道菜</text>
+      </view>
+      <view class="stat-sep"></view>
+      <view class="stat-item {{stats.pendingCount > 0 ? 'stat-has-pending' : ''}}">
+        <text class="stat-val">{{stats.pendingCount}}</text>
+        <text class="stat-lbl">待完成</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="unread-banner" wx:if="{{unread.hasUnread}}">
+    <view class="unread-copy">
+      <text class="unread-title">有 {{unread.count}} 个新点单</text>
+      <text class="unread-desc">{{unread.latestText}}</text>
+    </view>
+    <button class="unread-action" bindtap="acknowledgeUnreadOrders">
+      <text>我知道了</text>
+    </button>
+  </view>
+
+  <!-- ── Tab 切换 ── -->
+  <view class="tab-bar">
+    <button
+      class="tab-btn {{activeTab === 'byDish' ? 'tab-active' : ''}}"
+      bindtap="switchTab"
+      data-tab="byDish"
+    ><text>按菜看</text></button>
+    <button
+      class="tab-btn {{activeTab === 'byPerson' ? 'tab-active' : ''}}"
+      bindtap="switchTab"
+      data-tab="byPerson"
+    ><text>按人看</text></button>
+  </view>
+
+  <!-- ── 空状态 ── -->
+  <view class="empty-wrap" wx:if="{{isEmpty}}">
+    <view class="empty-icon-box">
+      <view class="empty-bowl"></view>
+    </view>
+    <text class="empty-title">今天还没有人点单</text>
+    <text class="empty-copy">等家人提交了点单，这里就能看到今日菜单</text>
+  </view>
+
+  <!-- ── 按菜看 ── -->
+  <view class="card-list" wx:elif="{{activeTab === 'byDish'}}">
+    <view
+      class="dish-card {{item.done ? 'card-done' : ''}}"
+      wx:for="{{byDish}}"
+      wx:key="name"
+    >
+      <!-- 菜名 + 状态 -->
+      <view class="dish-card-top">
+        <view class="dish-name-col">
+          <text class="d-name">{{item.name}}</text>
+          <text class="d-count">共 {{item.totalCount}} 份</text>
+        </view>
+        <view class="status-badge {{item.done ? 'badge-done' : 'badge-pending'}}">
+          <text>{{item.done ? '已完成' : '待制作'}}</text>
+        </view>
+      </view>
+
+      <!-- 每人的明细 -->
+      <view class="detail-rows">
+        <view
+          class="detail-row"
+          wx:for="{{item.orderDetails}}"
+          wx:key="diner"
+          wx:for-item="od"
+        >
+          <view class="od-left">
+            <text class="od-diner">{{od.diner}}</text>
+            <text class="od-qty">×{{od.quantity}}</text>
+          </view>
+          <view class="od-right">
+            <view class="od-taste-tag"><text>{{od.taste}}</text></view>
+            <text class="od-note" wx:if="{{od.note}}">{{od.note}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 操作按钮 -->
+      <button
+        class="action-btn {{item.done ? 'btn-done' : 'btn-primary'}}"
+        bindtap="markDishDone"
+        data-name="{{item.name}}"
+        disabled="{{item.done}}"
+      ><text>{{item.done ? '✓  已完成' : '标记完成'}}</text></button>
+
+      <!-- 评价汇总 -->
+      <view class="review-summary" wx:if="{{item.done && item.reviews.length > 0}}">
+        <text class="review-summary-label">家人评价</text>
+        <view class="review-summary-row" wx:for="{{item.reviews}}" wx:key="createdAt" wx:for-item="r">
+          <text class="r-user">{{r.userName}}：</text>
+          <view class="r-tags-inline">
+            <text wx:for="{{r.tags}}" wx:key="*this" wx:for-item="tag" class="r-tag-small">{{tag}}</text>
+          </view>
+          <text class="r-comment-small" wx:if="{{r.comment}}">{{r.comment}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ── 按人看 ── -->
+  <view class="card-list" wx:else>
+    <view class="person-card" wx:for="{{byPerson}}" wx:key="id">
+      <!-- 人名头部 -->
+      <view class="person-top">
+        <view class="person-avatar">
+          <image wx:if="{{item.avatar}}" class="person-avatar-img" src="{{item.avatar}}" mode="aspectFill"></image>
+          <text wx:else>{{item.avatarChar}}</text>
+        </view>
+        <view class="person-meta">
+          <text class="p-name">{{item.diner}}</text>
+          <text class="p-time">{{item.time}} 点单</text>
+        </view>
+        <view class="taste-badge">
+          <text>{{item.taste}}</text>
+        </view>
+      </view>
+
+      <!-- 菜品列表 -->
+      <view class="person-dishes">
+        <view
+          class="p-dish-row"
+          wx:for="{{item.items}}"
+          wx:key="name"
+          wx:for-item="dish"
+        >
+          <text class="p-dish-name">{{dish.name}}</text>
+          <text class="p-dish-qty">×{{dish.quantity}}</text>
+        </view>
+      </view>
+
+      <!-- 留言 -->
+      <view class="person-note" wx:if="{{item.note}}">
+        <text class="note-label">悄悄话</text>
+        <text class="note-text">{{item.note}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ── 底部固定栏 ── -->
+  <view class="bottom-dock">
+    <button
+      class="dock-all-btn"
+      wx:if="{{!isEmpty}}"
+      bindtap="markAllDone"
+    ><text>全部标记完成</text></button>
+    <button
+      class="dock-home-btn {{isEmpty ? 'dock-home-solo' : ''}}"
+      bindtap="goHome"
+    ><text>返回首页</text></button>
+  </view>
+
+  <view class="subscribe-bar" bindtap="subscribeNotification">
+    <text class="subscribe-text">开启订单通知，家人点菜第一时间知道</text>
+  </view>
+
+</view>
