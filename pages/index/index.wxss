@@ -277,6 +277,7 @@
 .avatar-btns {
   display: flex;
   flex-direction: column;
+  align-items: stretch;
   gap: 14rpx;
   width: 100%;
   margin-top: 24rpx;
@@ -293,6 +294,9 @@
   padding: 0;
   padding-top: 0;
   padding-bottom: 0;
+  padding-left: 0;
+  padding-right: 0;
+  border: none;
   border-radius: 999rpx;
   background: #6f3d2e;
   color: #fffdf8;
@@ -302,7 +306,8 @@
 }
 
 .avatar-btn-primary::after {
-  border: none;
+  content: none;
+  display: none;
 }
 
 .avatar-btn-secondary {
